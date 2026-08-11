@@ -1,0 +1,10 @@
+{
+  "bestand": "plof-pqc.js",
+  "versie": "1.0.0",
+  "sri": "sha384-MYhathy53Rl2gdxYLYyjL+1DxLkB4X0NVggp5Dy+wLPWYvAMDj15ix4NLk3A7U9F",
+  "sha256": "daf97a065144a9e49870fce7dbf36f0a3882220b62506672f4eec749da58c57c",
+  "bytes": 49318,
+  "gepubliceerd": "2026-08-11",
+  "doel": "Onafhankelijk gepubliceerde integriteitshash van de Plof post-quantum crypto-bundel. Deze bron staat LOS van de plof.app-webserver (op GitHub) zodat een aanvaller die de webserver zou overnemen, deze hash niet stil kan wijzigen zonder ook dit GitHub-account te compromitteren. Vergelijk deze hash met wat je browser daadwerkelijk van plof.app laadt.",
+  "hoe_te_verifieren": "Zie verifieer-plof-bundel.sh in deze repository, of bereken zelf: curl -s 'https://plof.app/?plof_openen_pqc_js=1' | sha256sum en vergelijk met sha256 hierboven."
+}
