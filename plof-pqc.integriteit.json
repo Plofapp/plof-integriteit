@@ -1,10 +1,10 @@
 {
   "bestand": "plof-pqc.js",
-  "versie": "1.0.0",
-  "sri": "sha384-MYhathy53Rl2gdxYLYyjL+1DxLkB4X0NVggp5Dy+wLPWYvAMDj15ix4NLk3A7U9F",
-  "sha256": "daf97a065144a9e49870fce7dbf36f0a3882220b62506672f4eec749da58c57c",
-  "bytes": 49318,
-  "gepubliceerd": "2026-08-11",
-  "doel": "Onafhankelijk gepubliceerde integriteitshash van de Plof post-quantum crypto-bundel. Deze bron staat LOS van de plof.app-webserver (op GitHub) zodat een aanvaller die de webserver zou overnemen, deze hash niet stil kan wijzigen zonder ook dit GitHub-account te compromitteren. Vergelijk deze hash met wat je browser daadwerkelijk van plof.app laadt.",
-  "hoe_te_verifieren": "Zie verifieer-plof-bundel.sh in deze repository, of bereken zelf: curl -s 'https://plof.app/?plof_openen_pqc_js=1' | sha256sum en vergelijk met sha256 hierboven."
+  "versie": "1.2.0",
+  "beschrijving": "Canonieke integriteitsgegevens van de Plof post-quantum crypto-bundel. Deze bundel draait client-side in de browser en voert de X-Wing (X25519+ML-KEM-768) versleuteling (wikkel v1 en v2) uit. Vergelijk de hash hieronder met (a) het SRI-attribuut in de pagina en (b) de onafhankelijk gepubliceerde hash op GitHub. Alle drie horen identiek te zijn.",
+  "sri": "sha384-7Q/ctY4GHvpNO5g3qfS4PW0SIeQ4OuNjcCCPUklnmN9/ewD1+v1zn0jYyNU9FWHQ",
+  "sha256": "7ddad780ff81d05a77af4c7d5204519fe2c2fb9d54a671c4cd521a5d5f3f3dbe",
+  "bytes": 62415,
+  "github_bron": "https://raw.githubusercontent.com/Plofapp/plof-integriteit/main/plof-pqc.integriteit.json",
+  "opmerking": "sha256 = hex-hash van het VOLLEDIGE bestand zoals geserveerd (inclusief bannerregels). sri = sha384 base64, formaat voor het integrity-attribuut."
 }
