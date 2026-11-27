@@ -1,0 +1,10 @@
+{
+  "bestand": "plof-v2.js",
+  "core_commit": "e89cb3f",
+  "beschrijving": "Integriteitsgegevens van de Plof protocol-2-bundel (ML-KEM-1024 + ML-DSA-87, ratchet, Sesame, versleutelde opslag). Draait in de browser van de ontvanger. Vergelijk met het integrity-attribuut in de pagina.",
+  "sri": "sha384-gpRHC4GOJs+4LzEG8AcVlXX2s7X0jBP533fNkpA6q1tuv+Gu+YJjSKrfv0Wh7u0w",
+  "sha256": "96f71f75524e825d7b9c5f3248f0adeed9ef103608628134ac7ac4221df9f995",
+  "bytes": 80816,
+  "github_bron": "https://raw.githubusercontent.com/Plofapp/plof-integriteit/main/plof-v2.integriteit.json",
+  "opmerking": "sha256 = hex-hash van het VOLLEDIGE bestand zoals geserveerd op https://plof.app/?plof_openen_v2_js=1. sri = sha384 base64, voor het integrity-attribuut. Bron: Plofapp/plof-core web/ (commit hierboven) + plof-openen assets/v2/openen-v2.js; opnieuw te bouwen met tools/v2/bouw-bundel.sh."
+}

@@ -1,6 +1,6 @@
 # Plof — onafhankelijke bundel-integriteit
 
-Deze repository publiceert de integriteitshash van de **Plof post-quantum crypto-bundel** (`plof-pqc.js`) op een plek die **losstaat van de plof.app-webserver**.
+Deze repository publiceert de integriteitshashes van de **Plof crypto-bundels**: `plof-pqc.js` (protocol 1) en `plof-v2.js` (protocol 2: ML-KEM-1024, ML-DSA-87, ratchet) op een plek die **losstaat van de plof.app-webserver**.
 
 ## Waarom deze repository bestaat
 
@@ -10,8 +10,9 @@ Als iemand de plof.app-server zou overnemen, zou die de bundel kunnen vervangen 
 
 ## Wat hier staat
 
-- **`plof-pqc.integriteit.json`** — de canonieke hash (SHA-256 en SRI/SHA-384) van de huidige bundel, met versie en datum.
-- **`verifieer-plof-bundel.sh`** — een scriptje dat de live bundel bij plof.app ophaalt, hasht, en vergelijkt met de hash hierboven.
+- **`plof-pqc.integriteit.json`** — de canonieke hash (SHA-256 en SRI/SHA-384) van de protocol-1-bundel, met versie en datum.
+- **`plof-v2.integriteit.json`** — idem voor de protocol-2-bundel (`https://plof.app/?plof_openen_v2_js=1`), met de commit van Plof Core waaruit hij is gebouwd.
+- **`verifieer-plof-bundel.sh`** — een scriptje dat beide live bundels bij plof.app ophaalt, hasht, en vergelijkt met de hashes hierboven.
 
 ## Zelf verifiëren
 
@@ -23,9 +24,10 @@ Of handmatig:
 
 ```bash
 curl -s 'https://plof.app/?plof_openen_pqc_js=1' | sha256sum
+curl -s 'https://plof.app/?plof_openen_v2_js=1' | sha256sum
 ```
 
-Vergelijk de uitkomst met het veld `sha256` in `plof-pqc.integriteit.json`. Gelijk = goed. Verschillend = niet vertrouwen, onderzoeken.
+Vergelijk de uitkomsten met het veld `sha256` in `plof-pqc.integriteit.json` en `plof-v2.integriteit.json`. Gelijk = goed. Verschillend = niet vertrouwen, onderzoeken.
 
 ## Eerlijke beperking
 

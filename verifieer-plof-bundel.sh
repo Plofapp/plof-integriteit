@@ -20,39 +20,44 @@
 
 set -euo pipefail
 
-BUNDEL_URL="https://plof.app/?plof_openen_pqc_js=1"
-GITHUB_HASH_URL="https://raw.githubusercontent.com/Plofapp/plof-integriteit/main/plof-pqc.integriteit.json"
+controleer() {
+  local NAAM="$1" BUNDEL_URL="$2" GITHUB_HASH_URL="$3"
+  echo "== $NAAM"
+  echo "1. Bundel ophalen van plof.app ..."
+  local LIVE_HASH GITHUB_JSON GITHUB_HASH
+  LIVE_HASH="$(curl -fsSL "$BUNDEL_URL" | sha256sum | cut -d' ' -f1)"
+  echo "   Live hash (plof.app):  $LIVE_HASH"
+  echo "2. Gepubliceerde hash ophalen van GitHub ..."
+  GITHUB_JSON="$(curl -fsSL "$GITHUB_HASH_URL")"
+  # sha256 uit de JSON trekken zonder jq-afhankelijkheid
+  GITHUB_HASH="$(printf '%s' "$GITHUB_JSON" | grep -o '"sha256"[[:space:]]*:[[:space:]]*"[a-f0-9]*"' | grep -o '[a-f0-9]\{64\}')"
+  echo "   GitHub hash:           $GITHUB_HASH"
+  if [ -z "$GITHUB_HASH" ]; then
+    echo "   FOUT: kon de GitHub-hash niet lezen. Controleer de URL of je internetverbinding."
+    return 2
+  fi
+  if [ "$LIVE_HASH" = "$GITHUB_HASH" ]; then
+    echo "   OK: identiek aan de gepubliceerde versie."
+    return 0
+  fi
+  echo "   WAARSCHUWING: de bundel op plof.app komt NIET overeen met de gepubliceerde hash."
+  return 1
+}
 
 echo "Plof bundel-integriteitscontrole"
 echo "================================="
 echo
-
-# 1. Hash van de LIVE bundel bij plof.app
-echo "1. Bundel ophalen van plof.app ..."
-LIVE_HASH="$(curl -fsSL "$BUNDEL_URL" | sha256sum | cut -d' ' -f1)"
-echo "   Live hash (plof.app):  $LIVE_HASH"
-
-# 2. Onafhankelijk gepubliceerde hash van GitHub
-echo "2. Gepubliceerde hash ophalen van GitHub ..."
-GITHUB_JSON="$(curl -fsSL "$GITHUB_HASH_URL")"
-# sha256 uit de JSON trekken zonder jq-afhankelijkheid
-GITHUB_HASH="$(printf '%s' "$GITHUB_JSON" | grep -o '"sha256"[[:space:]]*:[[:space:]]*"[a-f0-9]*"' | grep -o '[a-f0-9]\{64\}')"
-echo "   GitHub hash:           $GITHUB_HASH"
+UITKOMST=0
+controleer "Protocol 1: plof-pqc.js" "https://plof.app/?plof_openen_pqc_js=1" \
+  "https://raw.githubusercontent.com/Plofapp/plof-integriteit/main/plof-pqc.integriteit.json" || UITKOMST=$?
 echo
-
-# 3. Vergelijken
-if [ -z "$GITHUB_HASH" ]; then
-  echo "FOUT: kon de GitHub-hash niet lezen. Controleer de URL of je internetverbinding."
-  exit 2
-fi
-
-if [ "$LIVE_HASH" = "$GITHUB_HASH" ]; then
-  echo "RESULTAAT: OK"
-  echo "De bundel die plof.app serveert is identiek aan de gepubliceerde versie."
-  exit 0
+controleer "Protocol 2: plof-v2.js (ML-KEM-1024, ML-DSA-87, ratchet)" "https://plof.app/?plof_openen_v2_js=1" \
+  "https://raw.githubusercontent.com/Plofapp/plof-integriteit/main/plof-v2.integriteit.json" || UITKOMST=$?
+echo
+if [ "$UITKOMST" = "0" ]; then
+  echo "RESULTAAT: OK - beide bundels zijn identiek aan de gepubliceerde versies."
 else
-  echo "RESULTAAT: WAARSCHUWING - HASHES VERSCHILLEN"
-  echo "De bundel op plof.app komt NIET overeen met de gepubliceerde hash."
+  echo "RESULTAAT: WAARSCHUWING - minstens één bundel wijkt af of kon niet worden gecontroleerd."
   echo "Vertrouw de versleuteling nu niet. Neem contact op met Plof en onderzoek dit."
-  exit 1
 fi
+exit "$UITKOMST"
